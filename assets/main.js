@@ -1,95 +1,108 @@
-﻿const portfolioData = {
-  profile: {
-    name: "홍길동",
-    role: "Frontend Developer",
-    tagline: "사용자 경험을 제품 경쟁력으로 연결하는 프론트엔드 개발자",
-    bio: "문제의 본질을 빠르게 파악하고, 사용자가 체감하는 속도와 명확한 인터랙션을 중심으로 웹 서비스를 설계합니다. 협업 과정에서는 예측 가능한 컴포넌트 구조와 테스트 가능한 코드 스타일을 우선합니다.",
+let revealObserver;
+let sectionObserver;
+
+const fallbackData = {
+  site: {
+    title: "Developer Portfolio",
+    description: "Developer portfolio website",
+    lang: "ko",
+    baseUrl: "",
+    repoName: "",
+    themeColor: "#1459ba",
   },
-  skills: [
-    {
-      category: "Frontend Core",
-      items: ["HTML5", "CSS3", "JavaScript (ES6+)", "TypeScript", "React"],
-    },
-    {
-      category: "UI Engineering",
-      items: ["Responsive Design", "Accessibility", "Design Systems", "Animation"],
-    },
-    {
-      category: "Performance",
-      items: ["Lighthouse", "Web Vitals", "Code Splitting", "Asset Optimization"],
-    },
-    {
-      category: "Collaboration",
-      items: ["Git/GitHub", "Figma", "Jira", "Notion"],
-    },
-  ],
-  projects: [
-    {
-      title: "서비스 랜딩 페이지 리뉴얼",
-      description:
-        "첫 방문 사용자의 이해도를 높이기 위해 정보 구조를 재구성하고 핵심 전환 흐름을 단순화한 프로젝트입니다.",
-      tech: ["HTML", "CSS", "JavaScript"],
-      repoUrl: "https://github.com/<github-username>/landing-redesign",
-      demoUrl: "https://<github-username>.github.io/landing-redesign/",
-      highlights: [
-        "핵심 섹션 우선순위 재배치로 초기 이탈 구간을 개선",
-        "이미지 최적화와 CSS 정리로 페이지 로딩 속도 개선",
-      ],
-    },
-    {
-      title: "대시보드 컴포넌트 라이브러리",
-      description:
-        "반복되는 UI 패턴을 표준화하기 위해 카드, 테이블, 차트 래퍼를 공통 컴포넌트로 정리한 프로젝트입니다.",
-      tech: ["TypeScript", "React", "Storybook"],
-      repoUrl: "https://github.com/<github-username>/dashboard-ui-kit",
-      demoUrl: "https://<github-username>.github.io/dashboard-ui-kit/",
-      highlights: [
-        "재사용 가능한 UI 템플릿으로 신규 페이지 개발 시간 단축",
-        "컴포넌트 문서화 기준을 정립해 협업 생산성 향상",
-      ],
-    },
-    {
-      title: "접근성 개선 태스크",
-      description:
-        "키보드 사용성과 스크린리더 호환성을 높이기 위해 폼, 모달, 내비게이션 전반을 점검하고 개선한 작업입니다.",
-      tech: ["ARIA", "Semantic HTML", "Jest"],
-      repoUrl: "https://github.com/<github-username>/a11y-improvements",
-      demoUrl: "",
-      highlights: [
-        "포커스 이동 규칙 정비로 키보드 탐색 흐름 개선",
-        "의미론적 마크업 강화로 스크린리더 안내 품질 향상",
-      ],
-    },
-  ],
-  experience: [
-    {
-      company: "ABC Tech",
-      period: "2024.03 - 현재",
-      role: "Frontend Engineer",
-      bullets: [
-        "서비스 주요 화면 성능 개선과 UI 리뉴얼을 주도",
-        "디자인-개발 핸드오프 기준을 문서화해 이슈 재발을 감소",
-      ],
-    },
-    {
-      company: "XYZ Studio",
-      period: "2022.01 - 2024.02",
-      role: "Web Developer",
-      bullets: [
-        "마케팅 사이트와 운영툴 프론트엔드 개발 담당",
-        "공통 컴포넌트와 코드 리뷰 규칙 도입으로 유지보수성 향상",
-      ],
-    },
-  ],
+  profile: {
+    name: "Your Name",
+    role: "Developer",
+    tagline: "Build products with impact",
+    location: "",
+    email: "",
+    resumeUrl: "",
+    avatarUrl: "",
+    bio: "",
+  },
+  highlights: [],
+  skills: [],
+  projects: [],
+  experience: [],
+  education: [],
+  certifications: [],
   contacts: {
-    email: "hello@example.com",
-    github: "https://github.com/<github-username>",
-    linkedin: "https://www.linkedin.com/in/<linkedin-id>",
+    email: "",
+    github: "",
+    blog: "",
+    linkedin: "",
+  },
+  meta: {
+    version: 1,
+    updatedAt: "",
   },
 };
 
-let revealObserver;
-let sectionObserver;
+async function loadPortfolioData() {
+  try {
+    const response = await fetch("assets/portfolio-data.json", { cache: "no-store" });
+    if (!response.ok) throw new Error(`Failed to load data: ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    return fallbackData;
+  }
+}
+
+function hexToRgb(hex) {
+  if (!hex || typeof hex !== "string") return null;
+  const normalized = hex.trim().replace("#", "");
+  if (!/^[0-9a-fA-F]{6}$/.test(normalized)) return null;
+  return {
+    r: parseInt(normalized.slice(0, 2), 16),
+    g: parseInt(normalized.slice(2, 4), 16),
+    b: parseInt(normalized.slice(4, 6), 16),
+  };
+}
+
+function adjustHex(hex, amount) {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return hex;
+  const clamp = (value) => Math.max(0, Math.min(255, value));
+  const toHex = (value) => clamp(value).toString(16).padStart(2, "0");
+  return `#${toHex(rgb.r + amount)}${toHex(rgb.g + amount)}${toHex(rgb.b + amount)}`;
+}
+
+function setMetaTag(selector, attr, value) {
+  if (!value) return;
+  const node = document.querySelector(selector);
+  if (node) node.setAttribute(attr, value);
+}
+
+function applySiteMetadata(site) {
+  const data = site || {};
+  document.documentElement.lang = data.lang || "ko";
+
+  if (data.title) document.title = data.title;
+  setMetaTag('meta[name="description"]', "content", data.description);
+  setMetaTag('meta[property="og:title"]', "content", data.title);
+  setMetaTag('meta[property="og:description"]', "content", data.description);
+
+  const baseUrl = (data.baseUrl || "").replace(/\/$/, "");
+  if (baseUrl) {
+    setMetaTag('meta[property="og:url"]', "content", baseUrl);
+    setMetaTag('meta[property="og:image"]', "content", `${baseUrl}/assets/og-image.svg`);
+  }
+
+  if (data.themeColor) {
+    setMetaTag('meta[name="theme-color"]', "content", data.themeColor);
+    document.documentElement.style.setProperty("--accent", data.themeColor);
+    document.documentElement.style.setProperty("--accent-strong", adjustHex(data.themeColor, -28));
+
+    const rgb = hexToRgb(data.themeColor);
+    if (rgb) {
+      document.documentElement.style.setProperty(
+        "--accent-soft",
+        `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.16)`
+      );
+    }
+  }
+}
 
 function setActiveNavLink(targetHash) {
   const navLinks = document.querySelectorAll("[data-nav-link]");
@@ -99,33 +112,74 @@ function setActiveNavLink(targetHash) {
 }
 
 function setText(selector, value) {
-  if (!value) return;
-  const elements = document.querySelectorAll(selector);
-  elements.forEach((element) => {
-    element.textContent = value;
+  if (value === undefined || value === null || value === "") return;
+  const nodes = document.querySelectorAll(selector);
+  nodes.forEach((node) => {
+    node.textContent = value;
   });
 }
 
-function renderProfile(profile) {
-  setText('[data-field="name"]', profile.name);
-  setText('[data-field="name-footer"]', profile.name);
-  setText('[data-field="role"]', profile.role);
-  setText('[data-field="tagline"]', profile.tagline);
-  setText('[data-field="bio"]', profile.bio);
-  setText('[data-field="name-short"]', profile.name.slice(0, 3));
+function sanitizeLinkText(url) {
+  return url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+}
+
+function renderProfile(profile, contacts) {
+  const data = profile || {};
+  setText('[data-field="name"]', data.name);
+  setText('[data-field="name-footer"]', data.name);
+  setText('[data-field="role"]', data.role);
+  setText('[data-field="role-footer"]', data.role);
+  setText('[data-field="tagline"]', data.tagline);
+  setText('[data-field="bio"]', data.bio);
+  setText('[data-field="location"]', data.location);
+  setText('[data-field="name-short"]', data.name || "Portfolio");
+
+  const primaryEmail = data.email || contacts?.email || "";
+  const heroEmail = document.getElementById("hero-email");
+  if (heroEmail) {
+    if (primaryEmail) {
+      heroEmail.href = `mailto:${primaryEmail}`;
+      heroEmail.textContent = primaryEmail;
+    } else {
+      heroEmail.style.display = "none";
+    }
+  }
+
+  const resumeLink = document.getElementById("hero-resume");
+  if (resumeLink) {
+    if (data.resumeUrl) {
+      resumeLink.href = data.resumeUrl;
+    } else {
+      resumeLink.style.display = "none";
+    }
+  }
+}
+
+function renderAboutHighlights(highlights) {
+  const list = document.getElementById("about-highlights");
+  if (!list) return;
+  const items = Array.isArray(highlights) ? highlights : [];
+
+  if (!items.length) {
+    list.innerHTML = "";
+    return;
+  }
+
+  list.innerHTML = items.map((item) => `<li>${item}</li>`).join("");
 }
 
 function renderSkills(skills) {
   const list = document.getElementById("skills-list");
   if (!list) return;
 
-  list.innerHTML = skills
+  const groups = Array.isArray(skills) ? skills : [];
+  list.innerHTML = groups
     .map(
       (group, index) => `
         <article class="skill-group reveal" style="--stagger:${index}">
-          <h3>${group.category}</h3>
+          <h3>${group.category || "Category"}</h3>
           <ul class="badge-list">
-            ${group.items.map((item) => `<li>${item}</li>`).join("")}
+            ${(group.items || []).map((item) => `<li>${item}</li>`).join("")}
           </ul>
         </article>
       `
@@ -140,13 +194,21 @@ function projectLinks(project) {
       `<a href="${project.repoUrl}" target="_blank" rel="noreferrer noopener">Repository</a>`
     );
   }
+
   if (project.demoUrl) {
     links.push(
       `<a href="${project.demoUrl}" target="_blank" rel="noreferrer noopener">Live Demo</a>`
     );
   } else {
-    links.push('<a href="#projects" aria-disabled="true">Live Demo 준비 중</a>');
+    links.push('<span class="project-link-disabled">Live Demo pending</span>');
   }
+
+  if (project.docUrl) {
+    links.push(
+      `<a href="${project.docUrl}" target="_blank" rel="noreferrer noopener">Document</a>`
+    );
+  }
+
   return links.join("");
 }
 
@@ -154,17 +216,22 @@ function renderProjects(projects) {
   const list = document.getElementById("projects-list");
   if (!list) return;
 
-  list.innerHTML = projects
+  const items = Array.isArray(projects) ? projects : [];
+  list.innerHTML = items
     .map(
       (project, index) => `
         <article class="project-card reveal" style="--stagger:${index}">
-          <h3>${project.title}</h3>
-          <p>${project.description}</p>
+          <div class="project-head">
+            <h3>${project.title || "Untitled"}</h3>
+            ${project.featured ? '<span class="feature-badge">Featured</span>' : ""}
+          </div>
+          <p class="project-period">${project.period || ""}</p>
+          <p>${project.description || ""}</p>
           <ul class="badge-list">
-            ${project.tech.map((tech) => `<li>${tech}</li>`).join("")}
+            ${(project.tech || []).map((tech) => `<li>${tech}</li>`).join("")}
           </ul>
           <ul class="project-highlights">
-            ${project.highlights.map((highlight) => `<li>${highlight}</li>`).join("")}
+            ${(project.highlights || []).map((line) => `<li>${line}</li>`).join("")}
           </ul>
           <div class="project-links">
             ${projectLinks(project)}
@@ -179,14 +246,16 @@ function renderExperience(experience) {
   const list = document.getElementById("experience-list");
   if (!list) return;
 
-  list.innerHTML = experience
+  const items = Array.isArray(experience) ? experience : [];
+  list.innerHTML = items
     .map(
       (item, index) => `
         <li class="experience-item reveal" style="--stagger:${index}">
-          <h3>${item.company}</h3>
-          <p class="experience-meta">${item.role} · ${item.period}</p>
+          <h3>${item.company || ""}</h3>
+          <p class="experience-meta">${item.role || ""} ? ${item.period || ""}</p>
+          <p class="experience-description">${item.description || ""}</p>
           <ul class="experience-bullets">
-            ${item.bullets.map((bullet) => `<li>${bullet}</li>`).join("")}
+            ${(item.bullets || []).map((bullet) => `<li>${bullet}</li>`).join("")}
           </ul>
         </li>
       `
@@ -194,22 +263,93 @@ function renderExperience(experience) {
     .join("");
 }
 
-function renderContacts(contacts) {
+function renderEducation(education) {
+  const list = document.getElementById("education-list");
+  if (!list) return;
+
+  const items = Array.isArray(education) ? education : [];
+  list.innerHTML = items
+    .map(
+      (item) => `
+        <li>
+          <p class="subpanel-title">${item.school || ""}</p>
+          <p class="subpanel-meta">${item.major || ""} ? ${item.period || ""}</p>
+          ${(item.details || []).length ? `<p class="subpanel-detail">${item.details.join(", ")}</p>` : ""}
+        </li>
+      `
+    )
+    .join("");
+}
+
+function renderCertifications(certifications) {
+  const list = document.getElementById("certifications-list");
+  if (!list) return;
+
+  const items = Array.isArray(certifications) ? certifications : [];
+  list.innerHTML = items
+    .map(
+      (item) => `
+        <li>
+          <p class="subpanel-title">${item.name || ""}</p>
+          <p class="subpanel-meta">${item.issuer || ""}</p>
+          <p class="subpanel-detail">${item.date || ""}</p>
+        </li>
+      `
+    )
+    .join("");
+}
+
+function renderContacts(contacts, profile) {
+  const data = contacts || {};
+  const fallbackEmail = profile?.email || "";
+  const emailValue = data.email || fallbackEmail;
+
   const email = document.getElementById("contact-email");
   const github = document.getElementById("contact-github");
+  const blog = document.getElementById("contact-blog");
   const linkedin = document.getElementById("contact-linkedin");
 
   if (email) {
-    email.href = `mailto:${contacts.email}`;
-    email.textContent = contacts.email;
+    if (emailValue) {
+      email.href = `mailto:${emailValue}`;
+      email.textContent = emailValue;
+    } else {
+      email.parentElement?.remove();
+    }
   }
+
   if (github) {
-    github.href = contacts.github;
-    github.textContent = contacts.github.replace(/^https?:\/\//, "");
+    if (data.github) {
+      github.href = data.github;
+      github.textContent = sanitizeLinkText(data.github);
+    } else {
+      github.parentElement?.remove();
+    }
   }
+
+  if (blog) {
+    if (data.blog) {
+      blog.href = data.blog;
+      blog.textContent = sanitizeLinkText(data.blog);
+    } else {
+      blog.parentElement?.remove();
+    }
+  }
+
   if (linkedin) {
-    linkedin.href = contacts.linkedin;
-    linkedin.textContent = contacts.linkedin.replace(/^https?:\/\//, "");
+    if (data.linkedin) {
+      linkedin.href = data.linkedin;
+      linkedin.textContent = sanitizeLinkText(data.linkedin);
+    } else {
+      linkedin.parentElement?.remove();
+    }
+  }
+}
+
+function renderMeta(meta) {
+  const updatedNode = document.getElementById("updated-at");
+  if (updatedNode && meta?.updatedAt) {
+    updatedNode.textContent = meta.updatedAt;
   }
 }
 
@@ -232,10 +372,7 @@ function initSmoothScroll() {
       const targetTop =
         target.getBoundingClientRect().top + window.scrollY - headerHeight - 10;
 
-      window.scrollTo({
-        top: targetTop,
-        behavior: "smooth",
-      });
+      window.scrollTo({ top: targetTop, behavior: "smooth" });
     });
   });
 }
@@ -262,7 +399,7 @@ function initSectionObserver() {
         }
       });
 
-      if (visibleRatios.get(activeSection.id) === 0) {
+      if (activeSection && visibleRatios.get(activeSection.id) === 0) {
         const headerHeight = document.querySelector(".site-header")?.offsetHeight || 0;
         activeSection = sections.reduce((closest, section) => {
           const currentDistance = Math.abs(
@@ -275,7 +412,9 @@ function initSectionObserver() {
         }, sections[0]);
       }
 
-      setActiveNavLink(`#${activeSection.id}`);
+      if (activeSection) {
+        setActiveNavLink(`#${activeSection.id}`);
+      }
     },
     {
       threshold: [0, 0.2, 0.4, 0.6, 0.8],
@@ -284,7 +423,7 @@ function initSectionObserver() {
   );
 
   sections.forEach((section) => sectionObserver.observe(section));
-  setActiveNavLink(`#${sections[0].id}`);
+  if (sections[0]) setActiveNavLink(`#${sections[0].id}`);
 }
 
 function initRevealObserver() {
@@ -310,21 +449,28 @@ function initRevealObserver() {
 
 function initYear() {
   const yearNode = document.getElementById("current-year");
-  if (yearNode) {
-    yearNode.textContent = new Date().getFullYear();
-  }
+  if (yearNode) yearNode.textContent = new Date().getFullYear();
 }
 
-function init() {
-  renderProfile(portfolioData.profile);
-  renderSkills(portfolioData.skills);
-  renderProjects(portfolioData.projects);
-  renderExperience(portfolioData.experience);
-  renderContacts(portfolioData.contacts);
+async function init() {
+  const data = await loadPortfolioData();
+  applySiteMetadata(data.site);
+  renderProfile(data.profile, data.contacts);
+  renderAboutHighlights(data.highlights);
+  renderSkills(data.skills);
+  renderProjects(data.projects);
+  renderExperience(data.experience);
+  renderEducation(data.education);
+  renderCertifications(data.certifications);
+  renderContacts(data.contacts, data.profile);
+  renderMeta(data.meta);
+
   initSmoothScroll();
   initSectionObserver();
   initRevealObserver();
   initYear();
 }
 
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", () => {
+  init().catch((error) => console.error(error));
+});

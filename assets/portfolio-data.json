@@ -1,0 +1,176 @@
+{
+  "site": {
+    "title": "홍길동 | Developer Portfolio",
+    "description": "문제를 해결하고 결과를 만드는 개발자 포트폴리오",
+    "lang": "ko",
+    "baseUrl": "https://your-github-id.github.io",
+    "repoName": "portfolio",
+    "themeColor": "#0f766e"
+  },
+  "profile": {
+    "name": "홍길동",
+    "role": "Backend Developer",
+    "tagline": "데이터를 서비스 가치로 바꾸는 개발자",
+    "location": "Seoul, KR",
+    "email": "you@example.com",
+    "resumeUrl": "./assets/resume.pdf",
+    "avatarUrl": "./assets/profile.jpg",
+    "bio": "서비스의 핵심 문제를 데이터와 자동화로 해결하는 것을 좋아합니다. 유지보수 가능한 구조, 명확한 문서화, 협업 친화적인 개발 문화를 중요하게 생각합니다."
+  },
+  "highlights": [
+    "요구사항 분석부터 배포까지 end-to-end 경험",
+    "자동화 스크립트와 리포트 파이프라인 구축 경험",
+    "코드 리뷰 기반의 안정적인 협업 경험"
+  ],
+  "skills": [
+    {
+      "category": "Languages",
+      "items": [
+        "JavaScript",
+        "TypeScript",
+        "Python",
+        "SQL"
+      ]
+    },
+    {
+      "category": "Frontend",
+      "items": [
+        "HTML5",
+        "CSS3",
+        "React",
+        "Next.js"
+      ]
+    },
+    {
+      "category": "Backend",
+      "items": [
+        "Node.js",
+        "Express",
+        "FastAPI",
+        "REST API"
+      ]
+    },
+    {
+      "category": "Data",
+      "items": [
+        "Pandas",
+        "ExcelJS",
+        "MySQL",
+        "PostgreSQL"
+      ]
+    },
+    {
+      "category": "DevOps",
+      "items": [
+        "GitHub Actions",
+        "Docker",
+        "Vercel",
+        "AWS EC2"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "project-auto-sales-report",
+      "title": "Auto Sales Report Generator",
+      "period": "2026.03 - 2026.03",
+      "description": "엑셀 매출 데이터를 자동으로 정리하고 보고서 파일을 생성하는 리포팅 자동화 프로젝트",
+      "tech": [
+        "Python",
+        "Pandas",
+        "openpyxl",
+        "ExcelJS"
+      ],
+      "highlights": [
+        "반복 수작업 보고서 프로세스를 자동화해 작업 시간 단축",
+        "일자별/항목별 매출 지표 계산 로직 구현",
+        "보고서 템플릿 기반의 재사용 가능한 출력 구조 설계"
+      ],
+      "repoUrl": "https://github.com/your-github-id/auto-sales-report",
+      "demoUrl": "",
+      "docUrl": "",
+      "featured": true
+    },
+    {
+      "id": "project-sales-template",
+      "title": "Sales Template Builder",
+      "period": "2026.03 - 2026.03",
+      "description": "리포트 시각화 템플릿을 생성해 데이터 전달력을 높인 도구성 프로젝트",
+      "tech": [
+        "Node.js",
+        "ExcelJS",
+        "xlsx-chart"
+      ],
+      "highlights": [
+        "매출 리포트 템플릿 자동 생성 스크립트 구현",
+        "차트 기반 시각화를 통해 비개발자 이해도 향상",
+        "일관된 형식의 산출물로 운영 효율화"
+      ],
+      "repoUrl": "https://github.com/your-github-id/sales-template-builder",
+      "demoUrl": "",
+      "docUrl": "",
+      "featured": true
+    },
+    {
+      "id": "project-codex-intro",
+      "title": "Codex Intro Landing",
+      "period": "2026.03 - 2026.03",
+      "description": "간단한 소개형 랜딩 페이지를 통해 핵심 메시지를 시각적으로 전달하는 정적 웹 페이지",
+      "tech": [
+        "HTML",
+        "CSS"
+      ],
+      "highlights": [
+        "반응형 레이아웃 구성",
+        "가독성 중심 타이포그래피/컬러 설계",
+        "정적 배포 환경(GitHub Pages) 고려 구조 적용"
+      ],
+      "repoUrl": "https://github.com/your-github-id/codex-intro-landing",
+      "demoUrl": "https://your-github-id.github.io/codex-intro-landing",
+      "docUrl": "",
+      "featured": false
+    }
+  ],
+  "experience": [
+    {
+      "company": "Your Company",
+      "role": "Backend Developer",
+      "period": "2025.01 - Present",
+      "description": "내부 운영 도구 및 API 서비스를 개발하고 데이터 기반 자동화를 구축했습니다.",
+      "bullets": [
+        "배치 자동화 파이프라인 구축으로 수작업 시간 감소",
+        "API 응답 성능 개선 및 장애 대응 프로세스 정비",
+        "개발 문서/코딩 컨벤션 체계화"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "school": "OO대학교",
+      "major": "컴퓨터공학과",
+      "period": "2020.03 - 2024.02",
+      "details": [
+        "자료구조",
+        "알고리즘",
+        "데이터베이스 중심 학습"
+      ]
+    }
+  ],
+  "certifications": [
+    {
+      "name": "정보처리기사",
+      "issuer": "한국산업인력공단",
+      "date": "2024-06"
+    }
+  ],
+  "contacts": {
+    "email": "you@example.com",
+    "github": "https://github.com/your-github-id",
+    "blog": "https://your-blog-url.com",
+    "linkedin": "https://www.linkedin.com/in/your-id"
+  },
+  "meta": {
+    "version": 1,
+    "updatedAt": "2026-03-24"
+  }
+}
